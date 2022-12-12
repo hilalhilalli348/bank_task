@@ -73,12 +73,6 @@ public class TransferController {
     }
 
 
-    @GetMapping("/test")
-    public void test(){
-        runtimeService.createProcessInstanceByKey("testProcess")
-                .executeWithVariablesInReturn();
 
-
-    }
 
 }
