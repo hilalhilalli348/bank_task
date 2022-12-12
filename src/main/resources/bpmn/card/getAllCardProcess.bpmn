@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0az0j76" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.1.1">
+  <bpmn:process id="getAllCardProcess" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Bütün cart-ların alınması">
+      <bpmn:outgoing>Flow_1ddi3q3</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1ddi3q3" sourceRef="StartEvent_1" targetRef="Activity_0yg2c3t" />
+    <bpmn:endEvent id="Event_1attc1a">
+      <bpmn:incoming>Flow_00dalzd</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_00dalzd" sourceRef="Activity_0yg2c3t" targetRef="Event_1attc1a" />
+    <bpmn:serviceTask id="Activity_0yg2c3t" name="Bütün cart-ların alınması" camunda:delegateExpression="${getAllCardDelegate}">
+      <bpmn:incoming>Flow_1ddi3q3</bpmn:incoming>
+      <bpmn:outgoing>Flow_00dalzd</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_107htnc">
+        <bpmn:targetRef>DataStoreReference_08lytke</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:dataStoreReference id="DataStoreReference_08lytke" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="getAllCardProcess">
+      <bpmndi:BPMNEdge id="Flow_00dalzd_di" bpmnElement="Flow_00dalzd">
+        <di:waypoint x="430" y="117" />
+        <di:waypoint x="522" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ddi3q3_di" bpmnElement="Flow_1ddi3q3">
+        <di:waypoint x="228" y="117" />
+        <di:waypoint x="330" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="192" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="173" y="142" width="76" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1attc1a_di" bpmnElement="Event_1attc1a">
+        <dc:Bounds x="522" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0fhzlpj_di" bpmnElement="Activity_0yg2c3t">
+        <dc:Bounds x="330" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_08lytke_di" bpmnElement="DataStoreReference_08lytke">
+        <dc:Bounds x="355" y="235" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_107htnc_di" bpmnElement="DataOutputAssociation_107htnc">
+        <di:waypoint x="383" y="157" />
+        <di:waypoint x="389" y="235" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

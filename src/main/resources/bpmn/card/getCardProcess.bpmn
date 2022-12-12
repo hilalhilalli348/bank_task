@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions_151mytl" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.1.1">
+  <bpmn:process id="getCardProcess" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Cart-ın alınması (get card)">
+      <bpmn:outgoing>Flow_1v0ekhd</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1v0ekhd" sourceRef="StartEvent_1" targetRef="Activity_14tbl31" />
+    <bpmn:sequenceFlow id="Flow_1dph9h7" sourceRef="Activity_14tbl31" targetRef="Gateway_054iipz" />
+    <bpmn:serviceTask id="Activity_14tbl31" name="Card-ın fetch edilmə cəhdi edilir" camunda:delegateExpression="${checkCardDelegate}">
+      <bpmn:incoming>Flow_1v0ekhd</bpmn:incoming>
+      <bpmn:outgoing>Flow_1dph9h7</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_05705yw">
+        <bpmn:targetRef>DataStoreReference_05izctv</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_1phhi29" name="Card alınır" camunda:delegateExpression="${getCardDelegate}">
+      <bpmn:incoming>Flow_0lsfh8c</bpmn:incoming>
+      <bpmn:outgoing>Flow_002e0da</bpmn:outgoing>
+      <bpmn:property id="Property_10web7j" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_041x36d">
+        <bpmn:sourceRef>DataStoreReference_194t6v3</bpmn:sourceRef>
+        <bpmn:targetRef>Property_10web7j</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1m9plus">
+      <bpmn:incoming>Flow_002e0da</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_002e0da" sourceRef="Activity_1phhi29" targetRef="Event_1m9plus" />
+    <bpmn:endEvent id="Event_1xw42ua">
+      <bpmn:incoming>Flow_07kuxam</bpmn:incoming>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_1lftn9b" errorRef="Error_0fxdwy4" />
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="Gateway_054iipz" default="Flow_0lsfh8c">
+      <bpmn:incoming>Flow_1dph9h7</bpmn:incoming>
+      <bpmn:outgoing>Flow_07kuxam</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0lsfh8c</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_07kuxam" name="yoxdursa" sourceRef="Gateway_054iipz" targetRef="Event_1xw42ua">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{card==null}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0lsfh8c" name="varsa" sourceRef="Gateway_054iipz" targetRef="Activity_1phhi29" />
+    <bpmn:subProcess id="Activity_04z4nrs" triggeredByEvent="true">
+      <bpmn:startEvent id="Event_0u4wyi5">
+        <bpmn:outgoing>Flow_0oocczr</bpmn:outgoing>
+        <bpmn:errorEventDefinition id="ErrorEventDefinition_0kwp2qd" camunda:errorCodeVariable="errorCode" camunda:errorMessageVariable="errorMessage" />
+      </bpmn:startEvent>
+      <bpmn:endEvent id="Event_0mtoz79">
+        <bpmn:incoming>Flow_1gacbt2</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:serviceTask id="Activity_0ruhn37" name="catch exceptions for card" camunda:delegateExpression="${cardExceptionHandlerDelegate}">
+        <bpmn:incoming>Flow_0oocczr</bpmn:incoming>
+        <bpmn:outgoing>Flow_1gacbt2</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="Flow_1gacbt2" sourceRef="Activity_0ruhn37" targetRef="Event_0mtoz79" />
+      <bpmn:sequenceFlow id="Flow_0oocczr" sourceRef="Event_0u4wyi5" targetRef="Activity_0ruhn37" />
+    </bpmn:subProcess>
+    <bpmn:dataStoreReference id="DataStoreReference_05izctv" />
+    <bpmn:dataStoreReference id="DataStoreReference_194t6v3" />
+  </bpmn:process>
+  <bpmn:error id="Error_0fxdwy4" name="Error_33f5d9k" errorCode="404" camunda:errorMessage="Card not fount" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="getCardProcess">
+      <bpmndi:BPMNEdge id="Flow_0lsfh8c_di" bpmnElement="Flow_0lsfh8c" bioc:stroke="rgb(67, 160, 71)" bioc:fill="rgb(200, 230, 201)">
+        <di:waypoint x="575" y="267" />
+        <di:waypoint x="700" y="267" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="620" y="249" width="26" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07kuxam_di" bpmnElement="Flow_07kuxam" bioc:stroke="rgb(229, 57, 53)" bioc:fill="rgb(255, 205, 210)">
+        <di:waypoint x="550" y="242" />
+        <di:waypoint x="550" y="118" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="558" y="177" width="44" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_002e0da_di" bpmnElement="Flow_002e0da">
+        <di:waypoint x="800" y="267" />
+        <di:waypoint x="882" y="267" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1dph9h7_di" bpmnElement="Flow_1dph9h7">
+        <di:waypoint x="410" y="267" />
+        <di:waypoint x="525" y="267" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1v0ekhd_di" bpmnElement="Flow_1v0ekhd">
+        <di:waypoint x="215" y="267" />
+        <di:waypoint x="310" y="267" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="249" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="158" y="292" width="79" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0foicqf_di" bpmnElement="Activity_14tbl31">
+        <dc:Bounds x="310" y="227" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_08ityvk_di" bpmnElement="Activity_1phhi29">
+        <dc:Bounds x="700" y="227" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1m9plus_di" bpmnElement="Event_1m9plus">
+        <dc:Bounds x="882" y="249" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1xw42ua_di" bpmnElement="Event_1xw42ua" bioc:stroke="rgb(229, 57, 53)" bioc:fill="rgb(255, 205, 210)">
+        <dc:Bounds x="532" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_054iipz_di" bpmnElement="Gateway_054iipz" isMarkerVisible="true">
+        <dc:Bounds x="525" y="242" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_194t6v3_di" bpmnElement="DataStoreReference_194t6v3">
+        <dc:Bounds x="725" y="355" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_04z4nrs_di" bpmnElement="Activity_04z4nrs" isExpanded="true">
+        <dc:Bounds x="390" y="450" width="320" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0oocczr_di" bpmnElement="Flow_0oocczr">
+        <di:waypoint x="446" y="550" />
+        <di:waypoint x="495" y="550" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gacbt2_di" bpmnElement="Flow_1gacbt2">
+        <di:waypoint x="595" y="550" />
+        <di:waypoint x="647" y="550" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0u4wyi5_di" bpmnElement="Event_0u4wyi5">
+        <dc:Bounds x="410" y="532" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0mtoz79_di" bpmnElement="Event_0mtoz79">
+        <dc:Bounds x="647" y="532" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ruhn37_di" bpmnElement="Activity_0ruhn37">
+        <dc:Bounds x="495" y="510" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_05izctv_di" bpmnElement="DataStoreReference_05izctv">
+        <dc:Bounds x="335" y="355" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataInputAssociation_041x36d_di" bpmnElement="DataInputAssociation_041x36d">
+        <di:waypoint x="750" y="355" />
+        <di:waypoint x="750" y="307" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_05705yw_di" bpmnElement="DataOutputAssociation_05705yw">
+        <di:waypoint x="360" y="307" />
+        <di:waypoint x="360" y="355" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

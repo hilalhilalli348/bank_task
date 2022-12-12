@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions_1vadet5" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.1.1">
+  <bpmn:process id="getTransferProcess" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Transfer-in alınması">
+      <bpmn:outgoing>Flow_0qb9uxn</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0qb9uxn" sourceRef="StartEvent_1" targetRef="Activity_17b7bs9" />
+    <bpmn:serviceTask id="Activity_17b7bs9" name="Transfer-in fetch edilmə cəhdi edilir" camunda:delegateExpression="${checkTransferDelegate}">
+      <bpmn:incoming>Flow_0qb9uxn</bpmn:incoming>
+      <bpmn:outgoing>Flow_17b1fd9</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0vn9436">
+        <bpmn:targetRef>DataStoreReference_16zyznb</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_17b1fd9" sourceRef="Activity_17b7bs9" targetRef="Gateway_00t7236" />
+    <bpmn:serviceTask id="Activity_0cpajxj" name="Transfer-in alınır" camunda:delegateExpression="${getTransferDelegate}">
+      <bpmn:incoming>Flow_0erjw8y</bpmn:incoming>
+      <bpmn:outgoing>Flow_10k5unr</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_0b7ndlw">
+      <bpmn:incoming>Flow_10k5unr</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_10k5unr" sourceRef="Activity_0cpajxj" targetRef="Event_0b7ndlw" />
+    <bpmn:exclusiveGateway id="Gateway_00t7236" default="Flow_0erjw8y">
+      <bpmn:incoming>Flow_17b1fd9</bpmn:incoming>
+      <bpmn:outgoing>Flow_0erjw8y</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0rs2hhp</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0erjw8y" name="varsa" sourceRef="Gateway_00t7236" targetRef="Activity_0cpajxj" />
+    <bpmn:sequenceFlow id="Flow_0rs2hhp" name="yoxdursa" sourceRef="Gateway_00t7236" targetRef="Event_0bgieq7">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{transfer==null}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_0bgieq7">
+      <bpmn:incoming>Flow_0rs2hhp</bpmn:incoming>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_0ypemfl" errorRef="Error_0mdx7aa" />
+    </bpmn:endEvent>
+    <bpmn:dataStoreReference id="DataStoreReference_16zyznb" />
+    <bpmn:subProcess id="Activity_0m34lzr" triggeredByEvent="true">
+      <bpmn:startEvent id="Event_0unzcpu">
+        <bpmn:outgoing>Flow_1jtgh0b</bpmn:outgoing>
+        <bpmn:errorEventDefinition id="ErrorEventDefinition_12fknax" camunda:errorCodeVariable="errorCode" camunda:errorMessageVariable="errorMessage" />
+      </bpmn:startEvent>
+      <bpmn:endEvent id="Event_0bwv1y2">
+        <bpmn:incoming>Flow_0k5s2y0</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:serviceTask id="Activity_0zitg8u" name="catch exceptions for transfer" camunda:delegateExpression="${transferExceptionHandlerDelegate}">
+        <bpmn:incoming>Flow_1jtgh0b</bpmn:incoming>
+        <bpmn:outgoing>Flow_0k5s2y0</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="Flow_1jtgh0b" sourceRef="Event_0unzcpu" targetRef="Activity_0zitg8u" />
+      <bpmn:sequenceFlow id="Flow_0k5s2y0" sourceRef="Activity_0zitg8u" targetRef="Event_0bwv1y2" />
+    </bpmn:subProcess>
+  </bpmn:process>
+  <bpmn:error id="Error_0mdx7aa" name="transferNotFount" errorCode="404" camunda:errorMessage="Transfer not fount" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="getTransferProcess">
+      <bpmndi:BPMNEdge id="Flow_0rs2hhp_di" bpmnElement="Flow_0rs2hhp" bioc:stroke="rgb(229, 57, 53)" bioc:fill="rgb(255, 205, 210)">
+        <di:waypoint x="540" y="202" />
+        <di:waypoint x="540" y="88" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="548" y="142" width="44" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0erjw8y_di" bpmnElement="Flow_0erjw8y" bioc:stroke="rgb(67, 160, 71)" bioc:fill="rgb(200, 230, 201)">
+        <di:waypoint x="565" y="227" />
+        <di:waypoint x="690" y="227" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="615" y="209" width="26" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10k5unr_di" bpmnElement="Flow_10k5unr">
+        <di:waypoint x="790" y="227" />
+        <di:waypoint x="882" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17b1fd9_di" bpmnElement="Flow_17b1fd9">
+        <di:waypoint x="410" y="227" />
+        <di:waypoint x="515" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qb9uxn_di" bpmnElement="Flow_0qb9uxn">
+        <di:waypoint x="195" y="227" />
+        <di:waypoint x="310" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="159" y="209" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="152" y="252" width="52" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0fvz5w7_di" bpmnElement="Activity_17b7bs9">
+        <dc:Bounds x="310" y="187" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_00t7236_di" bpmnElement="Gateway_00t7236" isMarkerVisible="true">
+        <dc:Bounds x="515" y="202" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0kdibsc_di" bpmnElement="Activity_0cpajxj">
+        <dc:Bounds x="690" y="187" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0b7ndlw_di" bpmnElement="Event_0b7ndlw">
+        <dc:Bounds x="882" y="209" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_16zyznb_di" bpmnElement="DataStoreReference_16zyznb">
+        <dc:Bounds x="335" y="355" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_04rlt1p_di" bpmnElement="Event_0bgieq7" bioc:stroke="rgb(229, 57, 53)" bioc:fill="rgb(255, 205, 210)">
+        <dc:Bounds x="522" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0m34lzr_di" bpmnElement="Activity_0m34lzr" isExpanded="true">
+        <dc:Bounds x="365" y="450" width="350" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0k5s2y0_di" bpmnElement="Flow_0k5s2y0">
+        <di:waypoint x="590" y="550" />
+        <di:waypoint x="642" y="550" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1jtgh0b_di" bpmnElement="Flow_1jtgh0b">
+        <di:waypoint x="441" y="550" />
+        <di:waypoint x="490" y="550" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0unzcpu_di" bpmnElement="Event_0unzcpu">
+        <dc:Bounds x="405" y="532" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0bwv1y2_di" bpmnElement="Event_0bwv1y2">
+        <dc:Bounds x="642" y="532" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0zitg8u_di" bpmnElement="Activity_0zitg8u">
+        <dc:Bounds x="490" y="510" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0vn9436_di" bpmnElement="DataOutputAssociation_0vn9436">
+        <di:waypoint x="362" y="267" />
+        <di:waypoint x="364" y="355" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

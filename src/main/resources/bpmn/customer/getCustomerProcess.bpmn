@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions_1ici9o7" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.1.1">
+  <bpmn:process id="getCustomerProcess" isExecutable="true">
+    <bpmn:startEvent id="Event_10a56z2" name="Customer-ın alınması">
+      <bpmn:outgoing>Flow_14vmlco</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_0ckux9h">
+      <bpmn:incoming>Flow_14a9wz8</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_14vmlco" sourceRef="Event_10a56z2" targetRef="Activity_01oaqim" />
+    <bpmn:sequenceFlow id="Flow_14a9wz8" sourceRef="Activity_0h77d9d" targetRef="Event_0ckux9h" />
+    <bpmn:serviceTask id="Activity_01oaqim" name="Customer-ın fetch edilmə cəhdi edilir" camunda:delegateExpression="${checkCustomerDelegate}">
+      <bpmn:incoming>Flow_14vmlco</bpmn:incoming>
+      <bpmn:outgoing>Flow_07m0kl2</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1tdylqu">
+        <bpmn:targetRef>DataStoreReference_13xaa31</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0h77d9d" name="Axtarılan customer-ı alırıq" camunda:delegateExpression="${getCustomerDelegate}">
+      <bpmn:incoming>Flow_0uqq29t</bpmn:incoming>
+      <bpmn:outgoing>Flow_14a9wz8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_07m0kl2" sourceRef="Activity_01oaqim" targetRef="Gateway_14so2jc" />
+    <bpmn:dataStoreReference id="DataStoreReference_13xaa31" />
+    <bpmn:exclusiveGateway id="Gateway_14so2jc" default="Flow_0uqq29t">
+      <bpmn:incoming>Flow_07m0kl2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0uqq29t</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0wamke0</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0uqq29t" name="varsa" sourceRef="Gateway_14so2jc" targetRef="Activity_0h77d9d" />
+    <bpmn:sequenceFlow id="Flow_0wamke0" name="yoxdursa" sourceRef="Gateway_14so2jc" targetRef="Event_0n9lb9r">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{customer==null}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_0n9lb9r">
+      <bpmn:incoming>Flow_0wamke0</bpmn:incoming>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_04j8879" errorRef="Error_0zwmddx" />
+    </bpmn:endEvent>
+    <bpmn:subProcess id="Activity_1w58pr2" triggeredByEvent="true">
+      <bpmn:startEvent id="Event_0l45r3j">
+        <bpmn:outgoing>Flow_1wkxf40</bpmn:outgoing>
+        <bpmn:errorEventDefinition id="ErrorEventDefinition_1f4sp8y" camunda:errorCodeVariable="errorCode" camunda:errorMessageVariable="errorMessage" />
+      </bpmn:startEvent>
+      <bpmn:endEvent id="Event_1plc4oi">
+        <bpmn:incoming>Flow_129e2nj</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:serviceTask id="Activity_1g4k2g9" name="catch exceptions for customer" camunda:delegateExpression="${customerExceptionHandlerDelegate}">
+        <bpmn:incoming>Flow_1wkxf40</bpmn:incoming>
+        <bpmn:outgoing>Flow_129e2nj</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="Flow_129e2nj" sourceRef="Activity_1g4k2g9" targetRef="Event_1plc4oi" />
+      <bpmn:sequenceFlow id="Flow_1wkxf40" sourceRef="Event_0l45r3j" targetRef="Activity_1g4k2g9" />
+    </bpmn:subProcess>
+  </bpmn:process>
+  <bpmn:error id="Error_0zwmddx" name="customerNotFount" errorCode="404" camunda:errorMessage="Customer not fount" />
+  <bpmn:error id="Error_17f5epk" name="error123" />
+  <bpmn:error id="Error_0slgom5" name="Error_0kfjr2r" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="getCustomerProcess">
+      <bpmndi:BPMNEdge id="Flow_0wamke0_di" bpmnElement="Flow_0wamke0" bioc:stroke="rgb(229, 57, 53)" bioc:fill="rgb(255, 205, 210)">
+        <di:waypoint x="570" y="255" />
+        <di:waypoint x="570" y="148" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="578" y="200" width="44" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0uqq29t_di" bpmnElement="Flow_0uqq29t" bioc:stroke="rgb(67, 160, 71)" bioc:fill="rgb(200, 230, 201)">
+        <di:waypoint x="595" y="280" />
+        <di:waypoint x="720" y="280" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="630" y="262" width="26" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07m0kl2_di" bpmnElement="Flow_07m0kl2">
+        <di:waypoint x="440" y="280" />
+        <di:waypoint x="545" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14a9wz8_di" bpmnElement="Flow_14a9wz8">
+        <di:waypoint x="820" y="280" />
+        <di:waypoint x="912" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14vmlco_di" bpmnElement="Flow_14vmlco">
+        <di:waypoint x="238" y="280" />
+        <di:waypoint x="340" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1h58781_di" bpmnElement="Activity_01oaqim">
+        <dc:Bounds x="340" y="240" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_13xaa31_di" bpmnElement="DataStoreReference_13xaa31">
+        <dc:Bounds x="355" y="415" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_14so2jc_di" bpmnElement="Gateway_14so2jc" isMarkerVisible="true">
+        <dc:Bounds x="545" y="255" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1tx33sr_di" bpmnElement="Activity_0h77d9d">
+        <dc:Bounds x="720" y="240" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ckux9h_di" bpmnElement="Event_0ckux9h">
+        <dc:Bounds x="912" y="262" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_10a56z2_di" bpmnElement="Event_10a56z2">
+        <dc:Bounds x="202" y="262" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="191" y="305" width="61" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1nwl2rz_di" bpmnElement="Event_0n9lb9r" bioc:stroke="rgb(229, 57, 53)" bioc:fill="rgb(255, 205, 210)">
+        <dc:Bounds x="552" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1w58pr2_di" bpmnElement="Activity_1w58pr2" isExpanded="true">
+        <dc:Bounds x="420" y="510" width="300" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1wkxf40_di" bpmnElement="Flow_1wkxf40">
+        <di:waypoint x="478" y="610" />
+        <di:waypoint x="515" y="610" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_129e2nj_di" bpmnElement="Flow_129e2nj">
+        <di:waypoint x="615" y="610" />
+        <di:waypoint x="662" y="610" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1g4k2g9_di" bpmnElement="Activity_1g4k2g9">
+        <dc:Bounds x="515" y="570" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1plc4oi_di" bpmnElement="Event_1plc4oi">
+        <dc:Bounds x="662" y="592" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0l45r3j_di" bpmnElement="Event_0l45r3j">
+        <dc:Bounds x="442" y="592" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1tdylqu_di" bpmnElement="DataOutputAssociation_1tdylqu">
+        <di:waypoint x="389" y="320" />
+        <di:waypoint x="386" y="415" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

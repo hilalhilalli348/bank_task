@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0znxm3d" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.1.1">
+  <bpmn:process id="getAllCustomerProcess" isExecutable="true">
+    <bpmn:startEvent id="Event_1rekrnz" name="Bütün Customer-ların alınması">
+      <bpmn:outgoing>Flow_1qto7v0</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_1gnsf9t">
+      <bpmn:incoming>Flow_06fdn40</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_08vn8m0" name="Bütün customer-lar alınır" camunda:delegateExpression="${getAllCustomerDelegate}">
+      <bpmn:incoming>Flow_1qto7v0</bpmn:incoming>
+      <bpmn:outgoing>Flow_06fdn40</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0tpj1b0">
+        <bpmn:targetRef>DataStoreReference_1076o3m</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1qto7v0" sourceRef="Event_1rekrnz" targetRef="Activity_08vn8m0" />
+    <bpmn:sequenceFlow id="Flow_06fdn40" sourceRef="Activity_08vn8m0" targetRef="Event_1gnsf9t" />
+    <bpmn:dataStoreReference id="DataStoreReference_1076o3m" />
+  </bpmn:process>
+  <bpmn:error id="Error_07pz83k" name="customerNotFount" errorCode="404" camunda:errorMessage="Customer not fount" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="getAllCustomerProcess">
+      <bpmndi:BPMNEdge id="Flow_06fdn40_di" bpmnElement="Flow_06fdn40">
+        <di:waypoint x="450" y="120" />
+        <di:waypoint x="592" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qto7v0_di" bpmnElement="Flow_1qto7v0">
+        <di:waypoint x="218" y="120" />
+        <di:waypoint x="350" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1rekrnz_di" bpmnElement="Event_1rekrnz">
+        <dc:Bounds x="182" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="159" y="145" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1gnsf9t_di" bpmnElement="Event_1gnsf9t">
+        <dc:Bounds x="592" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_08vn8m0_di" bpmnElement="Activity_08vn8m0">
+        <dc:Bounds x="350" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_1076o3m_di" bpmnElement="DataStoreReference_1076o3m">
+        <dc:Bounds x="375" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0tpj1b0_di" bpmnElement="DataOutputAssociation_0tpj1b0">
+        <di:waypoint x="401" y="160" />
+        <di:waypoint x="404" y="265" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

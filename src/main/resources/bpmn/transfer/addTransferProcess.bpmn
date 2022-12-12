@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1wqqnlf" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.1.1">
+  <bpmn:process id="addTransferProcess" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Transfer-in əlavə edilməsi">
+      <bpmn:outgoing>Flow_00cp98l</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_00cp98l" sourceRef="StartEvent_1" targetRef="Activity_16zuajl" />
+    <bpmn:endEvent id="Event_1swlf93">
+      <bpmn:incoming>Flow_1bsl2dk</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1bsl2dk" sourceRef="Activity_16zuajl" targetRef="Event_1swlf93" />
+    <bpmn:serviceTask id="Activity_16zuajl" name="Transfer-in əlavə edilməsi" camunda:delegateExpression="${addTransferDelegate}">
+      <bpmn:incoming>Flow_00cp98l</bpmn:incoming>
+      <bpmn:outgoing>Flow_1bsl2dk</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0ufnjv8">
+        <bpmn:targetRef>DataStoreReference_1nt3z4q</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:dataStoreReference id="DataStoreReference_1nt3z4q" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="addTransferProcess">
+      <bpmndi:BPMNEdge id="Flow_1bsl2dk_di" bpmnElement="Flow_1bsl2dk">
+        <di:waypoint x="430" y="97" />
+        <di:waypoint x="552" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_00cp98l_di" bpmnElement="Flow_00cp98l">
+        <di:waypoint x="215" y="97" />
+        <di:waypoint x="330" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="79" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="157" y="122" width="82" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0x2mcsz_di" bpmnElement="Activity_16zuajl">
+        <dc:Bounds x="330" y="57" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1swlf93_di" bpmnElement="Event_1swlf93">
+        <dc:Bounds x="552" y="79" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_1nt3z4q_di" bpmnElement="DataStoreReference_1nt3z4q">
+        <dc:Bounds x="355" y="215" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0ufnjv8_di" bpmnElement="DataOutputAssociation_0ufnjv8">
+        <di:waypoint x="380" y="137" />
+        <di:waypoint x="380" y="215" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
